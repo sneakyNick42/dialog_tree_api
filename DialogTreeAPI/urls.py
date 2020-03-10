@@ -9,4 +9,5 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='DialogTree API', description='API')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', include('apps.users.urls')),
+    path('', include('apps.dialog_tree.urls')),
 ]
