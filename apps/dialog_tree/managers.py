@@ -1,3 +1,4 @@
+"""`dialog_tree` app managers."""
 from django.db import models
 
 

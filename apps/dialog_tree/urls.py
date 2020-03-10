@@ -1,10 +1,11 @@
+"""`dialog_tree` app urls."""
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-from apps.users.views import DialogViewSet
+from . import views
 
 router = SimpleRouter()
-router.register('dialogs', DialogViewSet, basename='dialog')
+router.register('dialogs', views.DialogViewSet, basename='dialog')
 
 urlpatterns = [
     path('', include(router.urls)),
