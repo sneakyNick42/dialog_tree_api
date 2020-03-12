@@ -1,5 +1,5 @@
 """`dialog_tree` app views."""
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from apps.dialog_tree.models import Answer, Dialog, Question
@@ -19,7 +19,7 @@ class DialogViewSet(ModelViewSet):
     """
 
     serializer_class = DialogSerializer
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Dialog.objects.all()
     lookup_field = 'slug'
     filter_fields = ('owner',)
@@ -41,7 +41,7 @@ class QuestionViewSet(ModelViewSet):
     """
 
     serializer_class = QuestionSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Question.objects.all()
 
 
@@ -56,7 +56,7 @@ class AnswerViewSet(ModelViewSet):
     """
 
     serializer_class = AnswerSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Answer.objects.all()
 
     def get_serializer_class(self):
