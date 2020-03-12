@@ -17,9 +17,12 @@ class Dialog(models.Model):
     name = models.CharField(max_length=255, verbose_name='Dialog name')
     description = models.TextField(verbose_name='Dialog description', default='', blank='')
     finished = models.BooleanField(verbose_name='Finished', default=False)
-    questions = models.ManyToManyField('Question',
-                                       verbose_name='Questions',
-                                       related_name='dialogs')
+    first_question = models.ForeignKey('Question',
+                                       on_delete=models.PROTECT,
+                                       verbose_name='First question',
+                                       related_name='dialogs',
+                                       null=True,
+                                       blank=True)
 
     objects = DialogQuerySet.as_manager()
 
@@ -67,7 +70,6 @@ class Answer(models.Model):
                                       related_name='previous_answers',
                                       null=True,
                                       blank=True)
-    end = models.BooleanField(verbose_name='End', default=False)
 
     class Meta:
         verbose_name = 'Answer'

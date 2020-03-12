@@ -4,7 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from apps.dialog_tree.models import Answer, Dialog, Question
 from apps.dialog_tree.permissions import IsOwnerOrReadOnly
-from apps.dialog_tree.serializers import AnswerSerializer, DialogSerializer, QuestionSerializer
+from apps.dialog_tree.serializers import AnswerSerializer, AnswerUpdateSerializer, DialogSerializer, \
+    DialogUpdateSerializer, QuestionSerializer
 
 
 class DialogViewSet(ModelViewSet):
@@ -22,6 +23,11 @@ class DialogViewSet(ModelViewSet):
     queryset = Dialog.objects.all()
     lookup_field = 'slug'
     filter_fields = ('owner',)
+
+    def get_serializer_class(self):
+        if self.action == 'update':
+            return DialogUpdateSerializer
+        return super().get_serializer_class()
 
 
 class QuestionViewSet(ModelViewSet):
@@ -52,3 +58,8 @@ class AnswerViewSet(ModelViewSet):
     serializer_class = AnswerSerializer
     permission_classes = (IsAuthenticated,)
     queryset = Answer.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'update':
+            return AnswerUpdateSerializer
+        return super().get_serializer_class()

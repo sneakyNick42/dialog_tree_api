@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.dialog_tree.apps.DialogTreeConfig',
+    'apps.dialog_tree',
     'rest_framework',
     'apps.users',
 ]
