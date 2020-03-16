@@ -1,7 +1,7 @@
 """`dialog_tree` app serializers."""
 from rest_framework import serializers
 
-from apps.dialog_tree.models import Answer, Dialog, Question
+from apps.dialog_tree.models import Answer, Dialog, Question, SelfQuestion
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -72,3 +72,33 @@ class DialogUpdateSerializer(DialogSerializer):
             'slug', 'description', 'finished',
             'first_question'
         )
+
+
+class SelfQuestionListSerializer(serializers.ModelSerializer):
+
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SelfQuestion
+        fields = (
+            'id', 'text', 'level',
+            'children',
+        )
+        read_only_fields = ('level',)
+
+    @staticmethod
+    def get_children(data):
+        return SelfQuestionListSerializer(many=True, instance=data.children.all()).data
+
+
+class SelfQuestionCreateSerializer(serializers.ModelSerializer):
+
+    parent = serializers.PrimaryKeyRelatedField(queryset=SelfQuestion.objects.all())
+
+    class Meta:
+        model = SelfQuestion
+        fields = (
+            'id', 'text', 'level',
+            'parent',
+        )
+        read_only_fields = ('level',)

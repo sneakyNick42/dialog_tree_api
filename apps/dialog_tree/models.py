@@ -79,3 +79,30 @@ class Answer(models.Model):
     def __str__(self):
         """String model representation."""
         return self.text
+
+
+class SelfQuestion(models.Model):
+
+    text = models.TextField(verbose_name='Text')
+    parent = models.ForeignKey('self',
+                               on_delete=models.CASCADE,
+                               null=True,
+                               blank=True,
+                               related_name='children')
+    level = models.PositiveIntegerField(default=0,
+                                        verbose_name='Tree level')
+
+    class Meta:
+        verbose_name = 'Self Question'
+        verbose_name_plural = 'Self Questions'
+        db_table = 'self_questions'
+
+    def __str__(self):
+        """String model representation."""
+        return self.text
+
+    def save(self, *args, **kwargs):
+        """Setting proper level before saving."""
+        if self.parent:
+            self.level = self.parent.level + 1
+        super().save(*args, **kwargs)

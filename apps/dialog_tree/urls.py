@@ -8,6 +8,7 @@ router = SimpleRouter()
 router.register('dialogs', views.DialogViewSet, basename='dialog')
 router.register('answers', views.AnswerViewSet, basename='answer')
 router.register('questions', views.QuestionViewSet, basename='question')
+router.register('self-questions', views.SelfQuestionViewSet, basename='self-question')
 
 # dialogs_router = routers.NestedSimpleRouter(router, 'dialogs', lookup='dialog')
 

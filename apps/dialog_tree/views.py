@@ -2,10 +2,10 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
-from apps.dialog_tree.models import Answer, Dialog, Question
+from apps.dialog_tree.models import Answer, Dialog, Question, SelfQuestion
 from apps.dialog_tree.permissions import IsOwnerOrReadOnly
 from apps.dialog_tree.serializers import AnswerSerializer, AnswerUpdateSerializer, DialogSerializer, \
-    DialogUpdateSerializer, QuestionSerializer
+    DialogUpdateSerializer, QuestionSerializer, SelfQuestionCreateSerializer, SelfQuestionListSerializer
 
 
 class DialogViewSet(ModelViewSet):
@@ -62,4 +62,16 @@ class AnswerViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'update':
             return AnswerUpdateSerializer
+        return super().get_serializer_class()
+
+
+class SelfQuestionViewSet(ModelViewSet):
+
+    serializer_class = SelfQuestionListSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    queryset = SelfQuestion.objects.all()
+
+    def get_serializer_class(self):
+        if self.action in ['detail', 'create']:
+            return SelfQuestionCreateSerializer
         return super().get_serializer_class()
